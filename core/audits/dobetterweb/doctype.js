@@ -71,10 +71,13 @@ class Doctype extends Audit {
     let quirksModeIssues = [];
     if (artifacts.traces && artifacts.InspectorIssues) {
       const trace = artifacts.traces[Audit.DEFAULT_PASS];
-      const processedTrace = await ProcessedTrace.request(trace, context);
-      const mainFrameId = processedTrace.mainFrameInfo.frameId;
-      quirksModeIssues =
-        artifacts.InspectorIssues.quirksModeIssue.filter(issue => issue.frameId === mainFrameId);
+
+      if (trace) {
+        const processedTrace = await ProcessedTrace.request(trace, context);
+        const mainFrameId = processedTrace.mainFrameInfo.frameId;
+        quirksModeIssues =
+          artifacts.InspectorIssues.quirksModeIssue.filter(issue => issue.frameId === mainFrameId);
+      }
     }
 
     // Can only determine limited quirks mode with some helps from the protocol via
